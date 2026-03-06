@@ -161,7 +161,12 @@ const UpdateUser = () => {
         </div>
       )}
 
-
+      {error && (
+        <div className="error-container">
+          <h3>Error</h3>
+          <p className="error-message">{error}</p>
+        </div>
+      )}
     </div>
   );
 };
