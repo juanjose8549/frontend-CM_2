@@ -156,20 +156,12 @@ const UpdateUser = () => {
       {/* Response Messages */}
       {response && (
         <div className={`response-container response-${response.status}`}>
-          <h3>Response</h3>
+          <h3>Mensaje</h3>
           <p className="response-message">{response.message}</p>
-          {response.data && typeof response.data === 'object' && (
-            <pre className="response-data">{JSON.stringify(response.data, null, 2)}</pre>
-          )}
         </div>
       )}
 
-      {error && (
-        <div className="error-container">
-          <h3>Error</h3>
-          <p className="error-message">{error}</p>
-        </div>
-      )}
+
     </div>
   );
 };
