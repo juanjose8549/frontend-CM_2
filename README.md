@@ -75,5 +75,8 @@ Databases(PostgreSQL database updating users records and MongoDB storing logs)
 Clone this repository to you local machine(make sure you are are using Node 18+)
 
 ### `npm install`
+
+create a local .env file from .env.example and set the backend: REACT_APP_API_URL=
+
 ### `npm start`
 
