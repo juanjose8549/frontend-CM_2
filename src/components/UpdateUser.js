@@ -37,19 +37,15 @@ const UpdateUser = () => {
     }
 
     const handleError = (errorData) => {
-      // const errorData = await response.json();
 
       let message = "Unknown error";
-      console.log(errorData.detail)
-      console.log(typeof errorData.detail)
 
+      
       if (typeof errorData.detail === "string") {
         message = errorData.detail;
       } else if (Array.isArray(errorData.detail)) {
-        message = errorData.detail.map(err => err.msg).join(", ");
-        // message = Array.isArray(errorData)
+        message = errorData.detail.map(err => `${err.msg}: ${err.input}`).join(", ");
       }
-      console.log(Array.isArray(errorData.detail))
 
       setError(message);
     };
@@ -64,9 +60,9 @@ const UpdateUser = () => {
 
     try {
       const result = await apiClient.updateUser(
-        parseInt(userId),
+        userId,
         updatePayload,
-        parseInt(updaterId)
+        updaterId
       );
       setResponse({
         status: 'success',
@@ -76,12 +72,7 @@ const UpdateUser = () => {
       // Reset form
       setFormData({ name: '', surname: '', password: '', is_active: true });
     } catch (err) {
-      // setError(err.message);
       handleError(err)
-      // setResponse({
-      //   status: 'error',
-      //   message: err.message,
-      // });
     } finally {
       setLoading(false);
     }
