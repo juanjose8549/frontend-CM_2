@@ -23,7 +23,9 @@ export const apiClient = {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to update user');
+        const error = new Error('Failed to update user');
+        error.detail = errorData.detail
+        throw error
       }
 
       return await response.json();
