@@ -36,6 +36,23 @@ const UpdateUser = () => {
       return;
     }
 
+    const handleError = (errorData) => {
+      // const errorData = await response.json();
+
+      let message = "Unknown error";
+      console.log(errorData.detail)
+      console.log(typeof errorData.detail)
+
+      if (typeof errorData.detail === "string") {
+        message = errorData.detail;
+      } else if (Array.isArray(errorData.detail)) {
+        message = errorData.detail.map(err => err.msg).join(", ");
+        // message = Array.isArray(errorData)
+      }
+      console.log(Array.isArray(errorData.detail))
+
+      setError(message);
+    };
     // Prepare update data (only include non-empty fields)
     const updatePayload = {};
     if (formData.name.trim()) updatePayload.name = formData.name;
@@ -59,11 +76,12 @@ const UpdateUser = () => {
       // Reset form
       setFormData({ name: '', surname: '', password: '', is_active: true });
     } catch (err) {
-      setError(err.message);
-      setResponse({
-        status: 'error',
-        message: err.message,
-      });
+      // setError(err.message);
+      handleError(err)
+      // setResponse({
+      //   status: 'error',
+      //   message: err.message,
+      // });
     } finally {
       setLoading(false);
     }
@@ -154,7 +172,7 @@ const UpdateUser = () => {
       </form>
 
       {/* Response Messages */}
-      {response && (
+      {response && !error && (
         <div className={`response-container response-${response.status}`}>
           <h3>Mensaje</h3>
           <p className="response-message">{response.message}</p>
