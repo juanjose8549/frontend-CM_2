@@ -7,5 +7,19 @@ RUN npm run build
 
 FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
-EXPOSE 8080
-CMD ["nginx", "-g", "daemon off;"]
+# Elimina la configuración por defecto y crea una nueva que use el puerto $PORT
+RUN rm /etc/nginx/conf.d/default.conf
+COPY <<-EOF /etc/nginx/conf.d/run.conf
+server {
+    listen       \${PORT};
+    server_name  localhost;
+    location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+        try_files \$uri \$uri/ /index.html;
+    }
+}
+EOF
+# Sustituye la variable PORT en el archivo de configuración al arrancar
+CMD sh -c "envsubst '\${PORT}' < /etc/nginx/conf.d/run.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+EXPOSE ${PORT}
