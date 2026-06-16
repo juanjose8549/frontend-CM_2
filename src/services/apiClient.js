@@ -1,5 +1,5 @@
 // API Client for backend communication
-const API_BASE_URL = process.env.REACT_APP_API_URL
+const API_BASE_URL = window.__API_URL__ || 'https://fallback-url.com'
 
 
 export const apiClient = {
